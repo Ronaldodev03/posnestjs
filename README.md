@@ -1,6 +1,7 @@
 ### commands for CLI
 
 - nest g res categories
+- nest g pi IdValidation common/pipes (creando custom pipe)
 
 ### dependencies
 
