@@ -2,6 +2,7 @@
 
 - nest g res categories
 - nest g pi IdValidation common/pipes (creando custom pipe)
+- nest g res products
 
 ### dependencies
 
