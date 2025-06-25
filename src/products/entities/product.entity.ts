@@ -23,9 +23,14 @@ export class Product {
   @Column({ type: 'int' })
   inventory: number;
 
-  @ManyToOne(() => Category)
+  // un producto pertenece a una categoria
+  @ManyToOne(
+    () => Category, // Product relacionado con Category
+    (category) => category.products, // la informacion de la products se va a loadear en la property products de category
+    { onDelete: 'CASCADE' }, // si elimino la category entonces se eliminan los products
+  )
   category: Category;
 
   @Column({ type: 'int' })
-  categoryId: number;
+  categoryId: number; // util para tener el id de la category sin tener que cragar la relacion en la peticion
 }
