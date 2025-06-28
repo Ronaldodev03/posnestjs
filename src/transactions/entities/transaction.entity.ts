@@ -22,7 +22,6 @@ export class Transaction {
   @OneToMany(
     () => TransactionContents, // Transaction relacionado con TransactionContents
     (transactionContent) => transactionContent.transaction, // la informacion de la "transaccion" se va a loader en la property "transaction" de la tabla "transactionContent"
-    { cascade: true },
   )
   contents: TransactionContents[];
 }
@@ -42,6 +41,7 @@ export class TransactionContents {
   @ManyToOne(
     () => Product, // TransactionContent relacionado con Product
     {
+      cascade: true,
       eager: true, // 'eager: true' means "products" will be automatically loaded with "transactionContents"
     },
   )
@@ -51,7 +51,10 @@ export class TransactionContents {
   @ManyToOne(
     () => Transaction, // TransactionContents relacionado con Transaction
     (transaction) => transaction.contents, // la informacion de la "transaccionContents" se va a loader en la property "contents" de la tabla "transaction"
-    { onDelete: 'CASCADE' }, // si elimino la transaccion tambien se elimina el contenido
+    {
+      cascade: true,
+      onDelete: 'CASCADE', // si elimino la transaccion tambien se elimina el contenido
+    },
   )
   transaction: Transaction;
 }
