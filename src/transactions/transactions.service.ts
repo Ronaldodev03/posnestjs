@@ -109,15 +109,48 @@ export class TransactionsService {
     return this.transactionRepository.find(options);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+  async findOne(id: number) {
+    const transaction = await this.transactionRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        contents: true,
+      },
+    });
+
+    if (!transaction) {
+      throw new NotFoundException('Transacción no encontrada');
+    }
+
+    return transaction;
   }
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
+  async remove(id: number) {
+    const transaction = await this.findOne(id);
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+    for (const contents of transaction.contents) {
+      const product = await this.productRepository.findOneBy({
+        id: contents.product.id,
+      });
+
+      const errors: string[] = [];
+
+      if (!product) {
+        errors.push(`El producto con el ID: ${contents.product.id} no existe`);
+        throw new NotFoundException(errors);
+      }
+
+      product.inventory += contents.quantity;
+      await this.productRepository.save(product);
+
+      const transactionContents =
+        await this.transactionContentsRepository.findOneBy({ id: contents.id });
+      transactionContents &&
+        (await this.transactionContentsRepository.remove(transactionContents));
+    }
+
+    await this.transactionRepository.remove(transaction);
+    return { message: 'Venta Eliminada' };
   }
 }
