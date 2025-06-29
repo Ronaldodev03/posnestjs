@@ -4,6 +4,7 @@
 - nest g pi IdValidation common/pipes (creando custom pipe)
 - nest g res products
 - nest g res transactions --no-spec
+- nest g res coupons --no-spec
 
 ### dependencies
 
