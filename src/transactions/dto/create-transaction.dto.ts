@@ -29,6 +29,9 @@ export class CreateTransactionDto {
   @IsNumber({}, { message: 'Cantidad no válida' })
   total: number;
 
+  @IsOptional()
+  coupon: string;
+
   // aqui validos nested objets que cumplan con el Dto de TransactionContentsDto
   @IsArray()
   @ArrayNotEmpty({ message: 'Los Contenidos no pueden ir vacios' })
