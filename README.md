@@ -5,6 +5,8 @@
 - nest g res products
 - nest g res transactions --no-spec
 - nest g res coupons --no-spec
+- nest g mo seeder
+- nest g s seeder
 
 ### dependencies
 
